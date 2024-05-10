@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,15 +19,10 @@ public class Supervisor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supervisorID;
 
-//    @NonNull
     private String supervisorName;
 
-//    @OneToOne
-//    @JoinColumn(name = "employee_id")
-//    private Employee employee;
-
-    @ManyToOne(cascade = CascadeType.PERSIST) //persist means that save() or persist() operations cascade to related entities
-    @JoinColumn(name = "department_id")
-    private Department department;
+    // supervisor manages many departments
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Department> department;
 
 }

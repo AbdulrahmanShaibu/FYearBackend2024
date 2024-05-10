@@ -10,15 +10,21 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table
-public class Area {
+public class Cleaner {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int areaID;
+    public int CleanerID;
 
-    public String areaName;
-    public String location;
+    public String CleanerName;
+    public String Gender;
 
-    // many area to one cleaner
+    //many cleaners to one department
     @ManyToOne
-    private Cleaner cleaner;
+    private Department department;
+
+    //many cleaners to a tool
+    @ManyToOne
+    private Tool tool;
+
 }

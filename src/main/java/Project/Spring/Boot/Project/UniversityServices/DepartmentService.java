@@ -39,7 +39,9 @@ public class DepartmentService {
         Optional<Department>optionalDepartment=departmentRepository.findById(departmentId);
         if(optionalDepartment.isPresent()){
             Department existingDepartment=optionalDepartment.get();
+
             existingDepartment.setDepartmentName(updatedDepartment.getDepartmentName());
+
             return departmentRepository.save(existingDepartment);
         } else {
             throw new NoSuchElementException("Department not found with id: " + departmentId);

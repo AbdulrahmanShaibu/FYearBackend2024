@@ -40,6 +40,7 @@ public class AreaService {
         // Set the properties of the area object with the provided details
         area.setAreaName(areaDetails.getAreaName());
         area.setLocation(areaDetails.getLocation());
+        area.setCleaner(area.getCleaner());
         Area savedArea = areaRepository.save(area);
         return savedArea;
     }

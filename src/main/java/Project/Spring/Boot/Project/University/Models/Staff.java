@@ -4,19 +4,17 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Table
 @Entity
- public class Department {
-
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Long departmentID;
-
- private String departmentName;
+public class Staff {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public int StaffID;
+    public String StaffName;
 
 }
 

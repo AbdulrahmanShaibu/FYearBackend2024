@@ -51,4 +51,9 @@ public class SupervisorController {
                    .body("Error while deleting supervisor" + deleteException.getMessage());
         }
     }
+
+    @GetMapping("/count/supervisors")
+    public long countSupervisors(){
+        return supervisorService.countSupervisors();
+    }
 }

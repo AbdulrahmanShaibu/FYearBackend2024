@@ -65,4 +65,8 @@ public class SupervisorService {
                         .body("Failed to delete supervisor with ID " + id);
             }
         }
+
+    public long countSupervisors() {
+        return supervisorRepository.count();
     }
+}
