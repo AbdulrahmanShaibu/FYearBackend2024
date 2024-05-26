@@ -14,7 +14,10 @@ public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int StaffID;
+
     public String StaffName;
+    public String StaffEmail;
+    public int StaffPhone;
 
 }
 

@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +26,15 @@ public class Supervisor {
     // supervisor manages many departments
     @OneToMany(fetch = FetchType.EAGER)
     private List<Department> department;
+
+    public List<String> getDepartmentNames() {
+        if (department != null) {
+            return department.stream()
+                    .map(Department::getDepartmentName)
+                    .collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
+    }
 
 }

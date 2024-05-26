@@ -32,8 +32,8 @@ public class ClaimsController {
     }
 
     @PutMapping("/update/claims/{id}")
-    public Claims updateClaims(@PathVariable(value = "id") int id, Claims newClaims){
-        return claimsService.updateClaims(id,newClaims);
+    public Claims updateClaims(@PathVariable(value = "id") int id, @RequestBody Claims newClaims){
+        return claimsService.updateClaims(id, newClaims);
     }
 
     @DeleteMapping("/delete/claims/{id}")

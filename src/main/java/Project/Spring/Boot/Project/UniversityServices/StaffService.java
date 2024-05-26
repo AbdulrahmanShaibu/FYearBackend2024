@@ -43,6 +43,8 @@ public class StaffService {
         if (optionalStaff.isPresent()) {
             Staff existingStaff = optionalStaff.get();
             existingStaff.setStaffName(staff.getStaffName());
+            existingStaff.setStaffEmail(staff.getStaffEmail());
+            existingStaff.setStaffPhone(staff.getStaffPhone());
             // set other attributes if needed
             return staffRepository.save(existingStaff);
         } else {
