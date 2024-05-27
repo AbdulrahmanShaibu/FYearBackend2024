@@ -110,7 +110,13 @@
 			<version>2.5.0</version>
 		</dependency>
 
-    </dependencies>
+<!--		for debugging logger-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>

@@ -7,6 +7,7 @@ import Project.Spring.Boot.Project.Repository.JwtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,29 +48,36 @@ public class AuthenticationService {
                 .build();
         jwtRepository.save(user);
         var jwtToken = jwtUtil.generateToken(user);
+        System.out.println("generated token for registered user:"+user.getUsername()+" "+"is:"+" "+jwtToken); //printing token
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
 
-//    This is sigin In logic after user Registration for registered users
-    public AuthenticationResponse authenticate(AuthenticattionRequest request) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
-            // Fetch all users with the provided email
-            var users = jwtRepository.findByEmail(request.getEmail());
-            var jwtToken = jwtUtil.generateToken(users);
-            return AuthenticationResponse.builder()
-                    .token(jwtToken)
-                    .build();
-        } catch (AuthenticationException authenticationException) {
-            // Log the authentication failure
-            authenticationException.printStackTrace();
-            throw new RuntimeException("Sorry, authentication failed: " + authenticationException.getMessage());
+//    This is signIn logic after user Registration for registered users
+public AuthenticationResponse authenticate(AuthenticattionRequest request) {
+    try {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication); // Ensure the context is set
+
+        JwtUser user= jwtRepository.findByEmail(request.getEmail());
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + request.getEmail());
         }
+
+        String jwtToken = jwtUtil.generateToken(user);
+        System.out.println("generated token for authenticated user:"+user.getUsername()+" "+jwtToken);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    } catch (BadCredentialsException authenticationException) {
+        authenticationException.printStackTrace();
+        throw new RuntimeException("Sorry, authentication failed: Invalid credentials");
     }
+}
+
 
 }

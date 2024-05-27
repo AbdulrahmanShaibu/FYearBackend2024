@@ -32,6 +32,8 @@ public class JwtUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
+    private JwtUser jwtUser;
     public JwtUser(Role role) {
         this.role = role;
     }
@@ -86,7 +88,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of( new SimpleGrantedAuthority(role.name()));
+        return List.of();
     }
 
     public String getPassword() {
@@ -115,7 +117,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     public void setPassword(String password) {
@@ -134,7 +136,6 @@ public class JwtUser implements UserDetails {
         private String password;
 
         public UserBuilder() {
-
         }
 //        private Role role;
 
