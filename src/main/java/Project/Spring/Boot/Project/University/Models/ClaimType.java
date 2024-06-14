@@ -4,26 +4,19 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
+import java.util.List;
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-
 @Entity
-public class Tool {
+public class ClaimType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long toolID;
+    private Long id;
+    private String type;
 
-    @NonNull
-    private String toolType;
-
-    @NonNull
-    private int quantity;
-
-    @ManyToOne
-    @JoinColumn(name = "client_site_id")
-    private ClientSite clientSite;
+    @ManyToMany(mappedBy = "claimTypes")
+    private List<StaffComplain> staffComplaints;
 
 }

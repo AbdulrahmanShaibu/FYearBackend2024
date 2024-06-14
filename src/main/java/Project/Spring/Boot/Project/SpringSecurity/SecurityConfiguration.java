@@ -3,6 +3,7 @@ package Project.Spring.Boot.Project.SpringSecurity;
 import Project.Spring.Boot.Project.University.Models.Admin;
 import Project.Spring.Boot.Project.UniversityRepository.AdminRepository;
 import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +41,10 @@ public class SecurityConfiguration {
 //                .requestMatchers("/api/v1/auth/authenticate").permitAll()
                 .requestMatchers("/api/v1/**").permitAll()
                 .requestMatchers("/api/v1/admin/").permitAll()
+                .requestMatchers("/api/v1/users/users/list").permitAll()
+                .requestMatchers("http://localhost:8080/api/v1/all/client-sites").permitAll()
+                .requestMatchers(" http://localhost:8080/api/v1/list/staff").permitAll()
+                .requestMatchers("/api/v1/list/company-staff").hasAnyRole("CLEANER", "MANAGER")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -42,11 +53,34 @@ public class SecurityConfiguration {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+//added on 14/06/2024
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        http.cors().configurationSource(source);
+
         return http.build();
     }
 
 
+    @Bean
+    public BasicAuthenticationEntryPoint authenticationEntryPoint() {
+        BasicAuthenticationEntryPoint entryPoint = new BasicAuthenticationEntryPoint();
+        entryPoint.setRealmName("myAppRealm");
+        return entryPoint;
+    }
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("Access Denied!");
+        };
+    }
     //Added 15/04/2024
 //    @Autowired
 //    private AdminRepository adminRepository;

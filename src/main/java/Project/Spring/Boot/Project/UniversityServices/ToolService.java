@@ -26,9 +26,8 @@ public class ToolService {
     }
     public Tool updateTool(Long id, Tool toolDetails) {
         Tool tool = getToolById(id);
-        tool.setToolName(toolDetails.getToolName());
+        tool.setToolType(toolDetails.getToolType());
         tool.setQuantity(toolDetails.getQuantity());
-        tool.setAvailabilityStatus(toolDetails.getAvailabilityStatus());
 // update other fields as needed
         System.out.println("update tools success"+tool);
         return toolRepository.save(tool);

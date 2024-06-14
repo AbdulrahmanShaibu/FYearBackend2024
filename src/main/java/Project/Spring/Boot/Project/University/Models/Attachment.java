@@ -1,29 +1,23 @@
 package Project.Spring.Boot.Project.University.Models;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-
 @Entity
-public class Tool {
+public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long toolID;
-
-    @NonNull
-    private String toolType;
-
-    @NonNull
-    private int quantity;
+    private Long id;
+    private String fileName;
 
     @ManyToOne
-    @JoinColumn(name = "client_site_id")
-    private ClientSite clientSite;
+//    @JoinColumn(name = "staff_id")
+    private Staffs staffs;
 
 }
