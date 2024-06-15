@@ -21,11 +21,11 @@ public class ClientSite {
  @JoinColumn(name = "client_organisation_id")
  private ClientOrganisation clientOrganisation;
 
- @OneToMany(mappedBy = "clientSite")
- private List<Tool> tools;
+// @OneToMany(mappedBy = "clientSite")
+// private List<Tool> tools;
 
- @OneToMany(mappedBy = "clientSite")
- private List<Staffs> staffs;
+ // @OneToMany(mappedBy = "clientSite")
+// private List<Staffs> staffs;
 
 }
 

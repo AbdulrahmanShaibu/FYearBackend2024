@@ -45,12 +45,13 @@ public class ClientSiteController {
     @PutMapping("/update/client-site/{ClientSiteId}")
     public ResponseEntity<?> updateClientSite(@PathVariable Long ClientSiteId, @RequestBody ClientSite clientSite) {
         try {
-            ClientSite updated = clientSiteService.updateClientSite(ClientSiteId, clientSite);
-            return ResponseEntity.ok(updated);
+            ResponseEntity<?> updated = clientSiteService.updateClientSite(ClientSiteId, clientSite);
+            return updated;
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to update ClientSite: " + e.getMessage());
         }
     }
+
 }

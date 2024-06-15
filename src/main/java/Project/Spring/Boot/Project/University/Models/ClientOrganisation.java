@@ -15,7 +15,7 @@ import java.util.List;
 public class ClientOrganisation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String name;
 
 //    @ManyToMany(mappedBy = "clientOrganisations")

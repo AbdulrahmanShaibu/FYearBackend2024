@@ -1,12 +1,15 @@
 package Project.Spring.Boot.Project.UniversityServices;
 
+import Project.Spring.Boot.Project.University.Models.ClientOrganisation;
 import Project.Spring.Boot.Project.University.Models.ClientSite;
+import Project.Spring.Boot.Project.UniversityRepository.ClientOrganisationRepository;
 import Project.Spring.Boot.Project.UniversityRepository.ClientSiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -14,9 +17,26 @@ public class ClientSiteService {
 
     @Autowired
     private ClientSiteRepository clientSiteRepository;
+    @Autowired
+    private ClientOrganisationRepository clientOrganisationRepository;
 
     public ClientSite createClientSite(ClientSite clientSite){
-        return clientSiteRepository.save(clientSite);
+        ClientOrganisation clientOrganisation = clientSite.getClientOrganisation();
+
+        // Check if clientOrganisation already exists by name
+        Optional<ClientOrganisation> existingOrg = clientOrganisationRepository.findByName(clientOrganisation.getName());
+        if (existingOrg.isPresent()) {
+            clientSite.setClientOrganisation(existingOrg.get());
+        } else {
+            // Save new clientOrganisation
+            ClientOrganisation savedOrg = clientOrganisationRepository.save(clientOrganisation);
+            clientSite.setClientOrganisation(savedOrg);
+        }
+
+        // Save the client site
+        ClientSite savedClientSite = clientSiteRepository.save(clientSite);
+
+        return ResponseEntity.ok(savedClientSite).getBody();
     }
 
     public List<ClientSite> getAllClientSites() {
@@ -28,26 +48,49 @@ public class ClientSiteService {
     }
 
     public boolean deleteClientSite(Long id) {
-        if (clientSiteRepository.existsById(id)) {
-            clientSiteRepository.deleteById(id);
-            return true;
+        // Check if the client site exists by ID
+        if (!clientSiteRepository.existsById(id)) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("ClientSite:"+id+"not found").hasBody();
         }
-        return false;
+
+        // Delete the client site
+        clientSiteRepository.deleteById(id);
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("ClientSite:"+id+"not found").hasBody();
     }
 
-    public ClientSite updateClientSite(Long ClientSiteId, ClientSite updatedClientSite) {
-        Optional<ClientSite>optionalClientSite= clientSiteRepository.findById(ClientSiteId);
-        if(optionalClientSite.isPresent()){
-            ClientSite existingClientSite =optionalClientSite.get();
-
-            existingClientSite.setName(updatedClientSite.getName());
-            existingClientSite.setTools(updatedClientSite.getTools());
-            existingClientSite.setClientOrganisation(updatedClientSite.getClientOrganisation());
-
-            return clientSiteRepository.save(existingClientSite);
-        } else {
-            throw new NoSuchElementException("ClientSite not found with id: " + ClientSiteId);
+    public ResponseEntity<?> updateClientSite(Long ClientSiteId, ClientSite updatedClientSite) {
+        // Check if the client site exists by ID
+        Optional<ClientSite> existingClientSiteOpt = clientSiteRepository.findById(ClientSiteId);
+        if (!existingClientSiteOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ClientSite: " + ClientSiteId + " not found");
         }
+
+        ClientSite existingClientSite = existingClientSiteOpt.get();
+
+        // Check if clientOrganisation already exists by name
+        ClientOrganisation updatedClientOrganisation = updatedClientSite.getClientOrganisation();
+        Optional<ClientOrganisation> existingOrg = clientOrganisationRepository.findByName(updatedClientOrganisation.getName());
+        if (existingOrg.isPresent()) {
+            existingClientSite.setClientOrganisation(existingOrg.get());
+        } else {
+            // Save new clientOrganisation
+            ClientOrganisation savedOrg = clientOrganisationRepository.save(updatedClientOrganisation);
+            existingClientSite.setClientOrganisation(savedOrg);
+        }
+
+        // Update other fields of the client site
+        existingClientSite.setName(updatedClientSite.getName());
+        // add other fields as necessary
+
+        // Save the updated client site
+        ClientSite savedClientSite = clientSiteRepository.save(existingClientSite);
+
+        return ResponseEntity.ok(savedClientSite);
     }
 
 
