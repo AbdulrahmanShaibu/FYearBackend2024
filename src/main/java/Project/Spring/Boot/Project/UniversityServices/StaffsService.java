@@ -43,8 +43,8 @@ public class StaffsService {
             existingStaffs.setStaffName(staffs.getStaffName());
             existingStaffs.setStaffEmail(staffs.getStaffEmail());
             existingStaffs.setStaffPhone(staffs.getStaffPhone());
-//            existingStaffs.setStaffComplaints(staffs.getStaffComplaints());
-//            existingStaffs.setAttachments(staffs.getAttachments());
+            existingStaffs.setStaffComplaints(staffs.getStaffComplaints());
+            existingStaffs.setAttachments(staffs.getAttachments());
             // set other attributes if needed
             return staffsRepository.save(existingStaffs);
         } else {

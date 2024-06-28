@@ -1,6 +1,9 @@
 package Project.Spring.Boot.Project.University.Models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +20,10 @@ public class Attachment {
     private String fileName;
 
     @ManyToOne
-//    @JoinColumn(name = "staff_id")
+    @JsonBackReference // Use this annotation to handle the relationship
+    @JoinColumn(name = "staff_id")
     private Staffs staffs;
+
+    //for solving an infinite recursive call which exhausts the stack space.
 
 }

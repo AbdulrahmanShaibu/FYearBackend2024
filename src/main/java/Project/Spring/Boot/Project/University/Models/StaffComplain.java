@@ -1,5 +1,8 @@
 package Project.Spring.Boot.Project.University.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +27,7 @@ public class StaffComplain {
     private Date submissionDate;
 
     @ManyToOne
+    @JsonBackReference // Child side of the relationship
     @JoinColumn(name = "staff_id")
     private Staffs staffs;
 
@@ -34,5 +38,4 @@ public class StaffComplain {
             inverseJoinColumns = @JoinColumn(name = "claim_type_id")
     )
     private List<ClaimType> claimTypes;
-
 }

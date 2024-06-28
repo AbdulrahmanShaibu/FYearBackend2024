@@ -68,4 +68,9 @@ public class CleaningCompanyController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/count/cleaning/company")
+    public long countCleaningCompany(){
+        return cleaningCompanyCompanyService.countCleaningCompany();
+    }
 }

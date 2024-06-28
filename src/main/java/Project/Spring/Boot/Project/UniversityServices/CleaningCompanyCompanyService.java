@@ -33,4 +33,9 @@ public class CleaningCompanyCompanyService {
     public void deleteCompany(int id) {
         cleaningCompanyRepository.deleteById(id);
     }
+
+
+    public long countCleaningCompany() {
+        return cleaningCompanyRepository.count();
+    }
 }

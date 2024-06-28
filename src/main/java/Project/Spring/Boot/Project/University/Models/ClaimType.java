@@ -16,7 +16,7 @@ public class ClaimType {
     private Long id;
     private String type;
 
-    @ManyToMany(mappedBy = "claimTypes")
-    private List<StaffComplain> staffComplaints;
+//    @ManyToMany(mappedBy = "claimTypes")
+//    private List<StaffComplain> staffComplaints;
 
 }
