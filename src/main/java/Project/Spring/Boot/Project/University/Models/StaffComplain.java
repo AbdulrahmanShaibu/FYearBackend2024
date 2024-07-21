@@ -1,5 +1,6 @@
 package Project.Spring.Boot.Project.University.Models;
 
+import Project.Spring.Boot.Project.Model.JwtUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -29,7 +30,7 @@ public class StaffComplain {
     @ManyToOne
     @JsonBackReference // Child side of the relationship
     @JoinColumn(name = "staff_id")
-    private Staffs staffs;
+    private JwtUser staffs; // should be jwt user, renamed from Staffs to jwt user
 
     @ManyToMany
     @JoinTable(

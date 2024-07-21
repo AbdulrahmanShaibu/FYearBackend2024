@@ -1,8 +1,10 @@
 package Project.Spring.Boot.Project.UniversityControllers;
 
+import Project.Spring.Boot.Project.Model.JwtUser;
 import Project.Spring.Boot.Project.University.Models.StaffComplain;
 import Project.Spring.Boot.Project.UniversityServices.StaffComplainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +18,14 @@ public class StaffComplainController {
     @Autowired
     private StaffComplainService staffComplainService;
 
+//    @PostMapping("/save/StaffComplain")
+//    public StaffComplain saveStaffComplain(@RequestBody StaffComplain staffComplain){
+//        return staffComplainService.saveStaffComplain(staffComplain);
+//    }
+
     @PostMapping("/save/StaffComplain")
-    public StaffComplain saveStaffComplain(@RequestBody StaffComplain staffComplain){
+    public StaffComplain createComplain(@RequestBody StaffComplain staffComplain, @AuthenticationPrincipal JwtUser user) {
+        staffComplain.setStaffs(user);
         return staffComplainService.saveStaffComplain(staffComplain);
     }
 

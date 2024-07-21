@@ -40,11 +40,11 @@ public class AuthenticationService {
     //Authenticate User during Registration
     public AuthenticationResponse register(RegisterRequest request) {
         var user = jwtUser.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
+                .firstName(request.getFirstname())
+                .lastName(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.USER)
+                .role(Role.STAFF)  //the role is set here
                 .build();
         jwtRepository.save(user);
         var jwtToken = jwtUtil.generateToken(user);

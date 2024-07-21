@@ -1,10 +1,7 @@
 package Project.Spring.Boot.Project.University.Models.Roles;
-
 public enum Roles {
     CLEANER("Cleaner"),
     MANAGER("Manager");
-//    STUDENT("Student"),
-//    TEACHER("Teacher");
 
     private final String roleName;
 

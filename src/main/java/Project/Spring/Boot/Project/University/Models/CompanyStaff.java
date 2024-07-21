@@ -17,12 +17,16 @@ public class CompanyStaff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-//    @Enumerated(EnumType.STRING)
-//    private List<Roles>roles;
 
     @ManyToOne
     @JoinColumn(name = "companyId")
     private CleaningCompany cleaningCompany;
+
+    @ElementCollection(targetClass = Roles.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "staff_roles")
+    @Column(name = "role")
+    private List<Roles> roles;
 
     @ManyToMany
     @JoinTable(

@@ -1,9 +1,11 @@
 package Project.Spring.Boot.Project.UniversityServices;
 
+import Project.Spring.Boot.Project.Model.JwtUser;
+import Project.Spring.Boot.Project.Repository.JwtRepository;
 import Project.Spring.Boot.Project.University.Models.Attachment;
-import Project.Spring.Boot.Project.University.Models.Staffs;
+//import Project.Spring.Boot.Project.University.Models.Staffs;
 import Project.Spring.Boot.Project.UniversityRepository.AttachmentRepository;
-import Project.Spring.Boot.Project.UniversityRepository.StaffsRepository;
+//import Project.Spring.Boot.Project.UniversityRepository.StaffsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,14 +20,18 @@ public class AttachmentService {
     @Autowired
     private AttachmentRepository attachmentRepository;
 
+//    @Autowired
+//    private StaffsRepository staffsRepository;
+
     @Autowired
-    private StaffsRepository staffsRepository;
+    private JwtRepository jwtRepository;
+
 
     public Attachment saveAttachment(MultipartFile file, int staffId) throws IOException {
         String fileName = file.getOriginalFilename();
         byte[] imageData = file.getBytes();
 
-        Staffs staffs = staffsRepository.findById(staffId)
+        JwtUser staffs = jwtRepository.findById(staffId)
                 .orElseThrow(() -> new RuntimeException("Staff not found with id: " + staffId));
 
         Attachment attachment = new Attachment();
@@ -58,7 +64,7 @@ public class AttachmentService {
             }
 
             if (staffId != null) {
-                Staffs staffs = staffsRepository.findById(Math.toIntExact(staffId))
+                JwtUser staffs = jwtRepository.findById(Math.toIntExact(staffId))
                         .orElseThrow(() -> new RuntimeException("Staff not found with id: " + staffId));
                 attachment.setStaffs(staffs);
             }

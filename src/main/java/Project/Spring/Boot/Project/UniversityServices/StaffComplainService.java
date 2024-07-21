@@ -18,10 +18,6 @@ public class StaffComplainService {
     @Autowired
     private StaffComplainRepository staffComplainRepository;
 
-    public StaffComplain saveStaffComplain(StaffComplain staffComplain) {
-        return staffComplainRepository.save(staffComplain);
-    }
-
     public List<StaffComplain> StaffComplainList() {
         return staffComplainRepository.findAll();
     }
@@ -72,5 +68,9 @@ public class StaffComplainService {
 
     public long countStaffComplain() {
         return staffComplainRepository.count();
+    }
+
+    public StaffComplain saveStaffComplain(StaffComplain staffComplain) {
+        return staffComplainRepository.save(staffComplain);
     }
 }

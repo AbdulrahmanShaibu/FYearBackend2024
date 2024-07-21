@@ -1,98 +1,71 @@
 package Project.Spring.Boot.Project.Model;
 
+import Project.Spring.Boot.Project.University.Models.Attachment;
+import Project.Spring.Boot.Project.University.Models.ClientSite;
+import Project.Spring.Boot.Project.University.Models.StaffComplain;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+@Data
 @Table
 @Entity
-//@AllArgsConstructor
 @NoArgsConstructor
 @Component
 public class JwtUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public  int id;
-    public String firstName;
-    public String lastName;
+    private int id;
+    private String firstName;
+    private String lastName;
 
-    @Column(unique = true)  // added 31/10/2023
-    public String email;
-    public String password;
-//    private Role role;
-
+    @Column(unique = true)
+    private String email;
+    private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ManyToOne
+    @JsonIgnoreProperties("staffs")
+    @JoinColumn(name = "client_site_id")
+    private ClientSite clientSite;
 
-    private JwtUser jwtUser;
-    public JwtUser(Role role) {
-        this.role = role;
-    }
+    @OneToMany(mappedBy = "staffs")
+    @JsonBackReference
+    private List<StaffComplain> staffComplaints;
 
-    public Role getRole() {
-        return role;
-    }
+    @OneToMany(mappedBy = "staffs")
+    @JsonIgnoreProperties("staffs")
+    private List<Attachment> attachments;
 
-//    public void setRole(Role role) {
-//        this.role = role;
-//    }
-
-    public JwtUser(int id, String firstName, String lastName, String email, String password) {
+    public JwtUser(int id, String firstName, String lastName, String email, String password, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    public String getPassword() {
-        return password;
+        Role userRole = getRole();
+        if (userRole != null) {
+            return List.of(new SimpleGrantedAuthority(userRole.name()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Override
@@ -120,32 +93,24 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
     public static UserBuilder builder() {
         return new UserBuilder();
     }
 
     public static class UserBuilder {
-        private String firstname;
-        private String lastname;
+        private String firstName;
+        private String lastName;
         private String email;
         private String password;
+        private Role role;
 
-        public UserBuilder() {
-        }
-//        private Role role;
-
-        public UserBuilder firstname(String firstname) {
-            this.firstname = firstname;
+        public UserBuilder firstName(String firstName) {
+            this.firstName = firstName;
             return this;
         }
 
-        public UserBuilder lastname(String lastname) {
-            this.lastname = lastname;
+        public UserBuilder lastName(String lastName) {
+            this.lastName = lastName;
             return this;
         }
 
@@ -159,19 +124,13 @@ public class JwtUser implements UserDetails {
             return this;
         }
 
-//        public UserBuilder(Role role) {
-//            this.role=role;
-//            this.role = role;
-//        }
+        public UserBuilder role(Role role) {
+            this.role = role;
+            return this;
+        }
 
         public JwtUser build() {
-            JwtUser user = new JwtUser();
-            user.setFirstName(this.firstname);
-            user.setLastName(this.lastname);
-            user.setEmail(this.email);
-            user.setPassword(this.password);
-//            user.setRole(this.role);
-            return user;
+            return new JwtUser(0, firstName, lastName, email, password, role);
         }
     }
 }
