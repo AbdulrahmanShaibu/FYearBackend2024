@@ -1,6 +1,6 @@
 package Project.Spring.Boot.Project.University.Models;
 
-import Project.Spring.Boot.Project.University.Models.Roles.Roles;
+import Project.Spring.Boot.Project.University.Models.Roles.StaffRoles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,15 +18,13 @@ public class CompanyStaff {
     private Long id;
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "companyId")
     private CleaningCompany cleaningCompany;
 
-    @ElementCollection(targetClass = Roles.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "staff_roles")
-    @Column(name = "role")
-    private List<Roles> roles;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "staff_id")
+    private List<StaffRoles> roles;
 
     @ManyToMany
     @JoinTable(
@@ -35,5 +33,4 @@ public class CompanyStaff {
             inverseJoinColumns = @JoinColumn(name = "client_organisation_id")
     )
     private List<ClientOrganisation> clientOrganisations;
-
 }

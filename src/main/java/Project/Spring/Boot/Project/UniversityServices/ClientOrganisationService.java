@@ -20,6 +20,7 @@ public class ClientOrganisationService {
         return clientOrganisationRepository.save(clientOrganisation);
     }
 
+
     public List<ClientOrganisation> ClientOrganisationList() {
         return clientOrganisationRepository.findAll();
     }

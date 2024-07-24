@@ -21,54 +21,48 @@ public class CompanyStaffService {
 
     public CompanyStaff getCompanyStaffsById(Long id) {
         return companyStaffRepository.findById(id)
-                .orElseThrow(() -> new
-                        NoSuchElementException("CompanyStaff not found with id " + id));
+                .orElseThrow(() -> new NoSuchElementException("CompanyStaff not found with id " + id));
     }
 
-    public ResponseEntity<String> createCompanyStaffs(CompanyStaff companyStaff) {
+//    public ResponseEntity<String> createCompanyStaffs(CompanyStaff companyStaff) {
+//        try {
+//            companyStaffRepository.save(companyStaff);
+//            return ResponseEntity.status(HttpStatus.CREATED).body("Saved successfully");
+//        } catch (Exception exception) {
+//            return ResponseEntity
+//                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error while saving details: " + exception.getMessage());
+//        }
+//    }
+
+    public CompanyStaff updateCompanyStaffs(Long id, CompanyStaff companyStaffDetails) {
+        CompanyStaff companyStaff = getCompanyStaffsById(id);
+        companyStaff.setName(companyStaffDetails.getName());
+        companyStaff.setRoles(companyStaffDetails.getRoles());
+        companyStaff.setCleaningCompany(companyStaffDetails.getCleaningCompany());
+        companyStaff.setClientOrganisations(companyStaffDetails.getClientOrganisations());
+        return companyStaffRepository.save(companyStaff);
+    }
+
+    public ResponseEntity<String> deleteCompanyStaffs(Long id) {
         try {
-            companyStaffRepository.save(companyStaff);
-            return ResponseEntity.ok("Saved successfully");
-        } catch (Exception exception) {
+            if (!companyStaffRepository.existsById(id)) {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body("CompanyStaff with ID " + id + " not found.");
+            }
+            companyStaffRepository.deleteById(id);
+            return ResponseEntity
+                    .ok()
+                    .body("CompanyStaff with ID " + id + " has been successfully deleted.");
+        } catch (Exception deleteException) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error while saving details: " + exception.getMessage());
+                    .body("Failed to delete CompanyStaff with ID " + id);
         }
     }
-        public CompanyStaff updateCompanyStaffs (Long id, CompanyStaff companyStaffDetails){
-            CompanyStaff companyStaff = getCompanyStaffsById(id);
-            companyStaff.setName(companyStaffDetails.getName());
-            companyStaff.setRoles(companyStaffDetails.getRoles());
-            companyStaff.setCleaningCompany(companyStaffDetails.getCleaningCompany());
-            return companyStaffRepository.save(companyStaff);
-        }
-
-        public ResponseEntity<?> deleteCompanyStaffs (Long id){
-            try {
-                // Check if Company exists
-                if (!companyStaffRepository.existsById(id)) {
-                    return ResponseEntity
-                            .status(HttpStatus.NOT_FOUND)
-                            .body("CompanyStaff with ID " + id + " not found.");
-                }
-                // Delete CompanyStaff
-                companyStaffRepository.deleteById(id);
-                // Return success message
-                return ResponseEntity
-                        .ok()
-                        .body("CompanyStaff with ID " + id + " has been successfully deleted.");
-            } catch (Exception deleteException) {
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Failed to delete CompanyStaff with ID " + id);
-            }
-        }
 
     public long countCompanyStaffs() {
         return companyStaffRepository.count();
     }
-
-//    public List<CompanyStaff> getCompanyStaffsByRole(StaffRoles staffRoles) {
-//        return companyStaffRepository.findByRole(staffRoles);
-//    }
 }

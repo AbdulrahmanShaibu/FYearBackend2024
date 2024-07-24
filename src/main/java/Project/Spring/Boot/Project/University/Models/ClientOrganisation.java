@@ -20,7 +20,7 @@ public class ClientOrganisation {
 
 //    @ManyToMany(mappedBy = "clientOrganisations")
 //    private List<CompanyStaff> companyStaffs;
-
+//
 //    @OneToMany(mappedBy = "clientOrganisation")
 //    private List<ClientSite> clientSites;
 

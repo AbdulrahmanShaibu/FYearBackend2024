@@ -18,8 +18,10 @@ public class ClientOrganisationController {
     private ClientOrganisationService clientOrganisationService;
 
     @PostMapping("/save/ClientOrganisation")
-    public ClientOrganisation createClientOrganisation(@RequestBody ClientOrganisation clientOrganisation){
-        return clientOrganisationService.createClientOrganisation(clientOrganisation);
+    public ResponseEntity<ClientOrganisation> createClientOrganisation(@RequestBody ClientOrganisation clientOrganisation) {
+        ClientOrganisation savedOrganisation = clientOrganisationService.createClientOrganisation(clientOrganisation);
+        System.out.println("Received payload: " + clientOrganisation);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedOrganisation);
     }
 
     @GetMapping("/ClientOrganisation/list")

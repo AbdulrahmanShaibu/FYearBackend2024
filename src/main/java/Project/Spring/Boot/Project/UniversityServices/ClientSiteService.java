@@ -20,8 +20,14 @@ public class ClientSiteService {
     @Autowired
     private ClientOrganisationRepository clientOrganisationRepository;
 
-    public ClientSite createClientSite(ClientSite clientSite){
+    public ClientSite createClientSite(ClientSite clientSite) {
         ClientOrganisation clientOrganisation = clientSite.getClientOrganisation();
+        if (clientOrganisation == null) {
+            throw new IllegalArgumentException("ClientOrganisation cannot be null");
+        }
+
+        // Log the received payload
+        System.out.println("Received ClientSite: " + clientSite);
 
         // Check if clientOrganisation already exists by name
         Optional<ClientOrganisation> existingOrg = clientOrganisationRepository.findByName(clientOrganisation.getName());
@@ -34,9 +40,7 @@ public class ClientSiteService {
         }
 
         // Save the client site
-        ClientSite savedClientSite = clientSiteRepository.save(clientSite);
-
-        return ResponseEntity.ok(savedClientSite).getBody();
+        return clientSiteRepository.save(clientSite);
     }
 
     public List<ClientSite> getAllClientSites() {

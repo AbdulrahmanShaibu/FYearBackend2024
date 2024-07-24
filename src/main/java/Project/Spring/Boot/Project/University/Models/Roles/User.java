@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+//This Entity is for  Company Staffs --> with roles CLEANER, ... implement login for them
 @Entity
 @Table(name = "company_roles")
 public class User {
@@ -14,8 +15,7 @@ public class User {
 
     private String username;
 
-    @Enumerated(EnumType.STRING)
-    private Roles roles;
+    private StaffRoles staffRoles;
 
     @ManyToOne
     @JoinColumn(name = "companyId")
@@ -34,9 +34,9 @@ public class User {
     public User() {
     }
 
-    public User(String username, Roles roles) {
+    public User(String username, StaffRoles staffRoles) {
         this.username = username;
-        this.roles = roles;
+        this.staffRoles = staffRoles;
     }
 
     public Long getId() {
@@ -55,12 +55,12 @@ public class User {
         this.username = username;
     }
 
-    public Roles getRole() {
-        return roles;
+    public StaffRoles getRole() {
+        return staffRoles;
     }
 
-    public void setRole(Roles roles) {
-        this.roles = roles;
+    public void setRole(StaffRoles staffRoles) {
+        this.staffRoles = staffRoles;
     }
 
     public void setCleaningCompany(CleaningCompany cleaningCompany) {

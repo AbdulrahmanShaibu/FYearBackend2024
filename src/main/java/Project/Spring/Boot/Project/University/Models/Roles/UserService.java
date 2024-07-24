@@ -10,8 +10,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User createUser(String username, Roles roles) {
-        User user = new User(username,roles);
+    public User createUser(String username, StaffRoles staffRoles) {
+        User user = new User(username, staffRoles);
         return userRepository.save(user);
     }
 
@@ -23,12 +23,12 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User updateUser(Long id, String username, Roles roles) {
+    public User updateUser(Long id, String username, StaffRoles staffRoles) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setUsername(username);
-            user.setRole(roles);
+            user.setRole(staffRoles);
             return userRepository.save(user);
         }
         return null;
@@ -37,4 +37,5 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
 }

@@ -18,8 +18,9 @@ public class ClientSiteController {
     private ClientSiteService clientSiteService;
 
     @PostMapping("/post/client-site")
-    public ClientSite createClientSite(@RequestBody ClientSite clientSite){
-        return clientSiteService.createClientSite(clientSite);
+    public ResponseEntity<ClientSite> createClientSite(@RequestBody ClientSite clientSite) {
+        ClientSite createdClientSite = clientSiteService.createClientSite(clientSite);
+        return ResponseEntity.ok(createdClientSite);
     }
 
     @GetMapping("/get/client-sites")

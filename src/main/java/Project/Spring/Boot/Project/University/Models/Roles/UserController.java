@@ -13,16 +13,24 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/users/create")
+    @Autowired
+    RoleTypeRepository roleTypeRepository;
+
+    @PostMapping("/create/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user.getUsername(), user.getRole());
         return ResponseEntity.ok(createdUser);
     }
 
-    @GetMapping("/users/list")
+    @GetMapping("/list/users")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/list/roles")
+    public List<StaffRoles> listRoles() {
+        return roleTypeRepository.findAll();
     }
 
     @GetMapping("/get/user/{id}")
