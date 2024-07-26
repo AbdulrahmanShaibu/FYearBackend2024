@@ -1,11 +1,18 @@
 package Project.Spring.Boot.Project.University.Models.Roles;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 @Entity
+@Data
 @Table(name = "staff_roles")
-public class StaffRoles implements Serializable {
+public class StaffRoles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,10 +24,9 @@ public class StaffRoles implements Serializable {
     // Default constructor
     public StaffRoles() {}
 
-    // Parameterized constructor
-    public StaffRoles(int id, RoleType roleName) {
-        this.id = id;
-        this.roleName = roleName;
+    @JsonCreator
+    public StaffRoles(@JsonProperty("roleName") String roleName) {
+        this.roleName = RoleType.valueOf(roleName.toUpperCase());
     }
 
     // Getters and setters

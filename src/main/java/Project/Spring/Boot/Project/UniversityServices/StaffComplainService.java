@@ -73,4 +73,8 @@ public class StaffComplainService {
     public StaffComplain saveStaffComplain(StaffComplain staffComplain) {
         return staffComplainRepository.save(staffComplain);
     }
+
+    public Optional<StaffComplain> getComplaintById(int id) {
+        return staffComplainRepository.findByIdWithUser(id);
+    }
 }

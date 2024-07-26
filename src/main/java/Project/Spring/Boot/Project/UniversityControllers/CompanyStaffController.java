@@ -1,6 +1,7 @@
 package Project.Spring.Boot.Project.UniversityControllers;
 
 import Project.Spring.Boot.Project.University.Models.CompanyStaff;
+import Project.Spring.Boot.Project.University.Models.Roles.RoleType;
 import Project.Spring.Boot.Project.University.Models.Roles.StaffRoles;
 import Project.Spring.Boot.Project.University.Models.Roles.RoleTypeRepository;
 import Project.Spring.Boot.Project.UniversityRepository.CleaningCompanyRepository;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @RestController
@@ -40,6 +42,12 @@ public class CompanyStaffController {
         return ResponseEntity.ok(companyStaffService.getAllCompanyStaffs());
     }
 
+    @GetMapping("/list/roles")
+    public ResponseEntity<RoleType[]> getRoleTypes() {
+        RoleType[] roleTypes = RoleType.values();
+        return ResponseEntity.ok(roleTypes);
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<CompanyStaff> getCompanyStaffsById(@PathVariable Long id) {
         CompanyStaff companyStaff = companyStaffService.getCompanyStaffsById(id);
@@ -50,11 +58,9 @@ public class CompanyStaffController {
     @Transactional
     public ResponseEntity<String> createCompanyStaffs(@Valid @RequestBody CompanyStaff companyStaff) {
         try {
-            // Validate roles
-            List<StaffRoles> roles = companyStaff.getRoles();
-            for (StaffRoles role : roles) {
-                roleTypeRepository.findByRoleName(role.getRoleName())
-                        .orElseThrow(() -> new BadRequestException("Role with name " + role.getRoleName() + " does not exist."));
+            // Check if cleaning company is null
+            if (companyStaff.getCleaningCompany() == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cleaning company is required-{backend message}.");
             }
 
             // Validate cleaning company

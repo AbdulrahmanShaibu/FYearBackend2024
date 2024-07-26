@@ -6,6 +6,7 @@ import Project.Spring.Boot.Project.SecurityServices.JwtUserServiceImpl;
 import Project.Spring.Boot.Project.University.Models.StaffComplain;
 import Project.Spring.Boot.Project.UniversityServices.StaffComplainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,11 @@ public class StaffComplainController {
     private JwtUserServiceImpl jwtUserService;
 
     // send complain by email
+//    http://localhost:8080/api/v1/save/staff-complain?email=kheria048@gmail.com
     @PostMapping("/save/staff-complain")
     public StaffComplain createComplain(@RequestParam String email, @RequestBody StaffComplain staffComplain) {
+        System.out.println("Received email: " + email); // Add this line for debugging
+        System.out.println("Received complaint: " + staffComplain);
         JwtUser user = jwtUserService.getUserByEmail(email);
         if (user != null) {
             staffComplain.setStaffs(user);
@@ -60,9 +64,11 @@ public class StaffComplainController {
         return staffComplainService.StaffComplainList();
     }
 
-    @GetMapping("/get/StaffComplain/{id}")
-    public Optional<StaffComplain> findStaffComplainById(@PathVariable(value = "id") int id){
-        return staffComplainService.findStaffComplainById(id);
+    @GetMapping("/complain/{id}")
+    public ResponseEntity<StaffComplain> getComplaintById(@PathVariable int id) {
+        Optional<StaffComplain> staffComplain = staffComplainService.getComplaintById(id);
+        return staffComplain.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/update/StaffComplain/{id}")

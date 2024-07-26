@@ -39,4 +39,5 @@ public class StaffComplain {
             inverseJoinColumns = @JoinColumn(name = "claim_type_id")
     )
     private List<ClaimType> claimTypes;
+
 }
