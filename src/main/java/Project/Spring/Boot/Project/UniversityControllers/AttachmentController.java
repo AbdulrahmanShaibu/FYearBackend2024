@@ -24,6 +24,11 @@ public class AttachmentController {
         return attachmentService.getAllAttachments();
     }
 
+    @GetMapping("/count/attachments")
+    public long countAttachments(){
+        return attachmentService.countAttachments();
+    }
+
     @GetMapping("/get/attachments/{id}")
     public Optional<Attachment> getAttachmentById(@PathVariable Long id) {
         return attachmentService.getAttachmentById(id);

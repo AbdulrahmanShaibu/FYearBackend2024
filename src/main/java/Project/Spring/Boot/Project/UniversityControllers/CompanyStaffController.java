@@ -1,9 +1,9 @@
 package Project.Spring.Boot.Project.UniversityControllers;
 
 import Project.Spring.Boot.Project.University.Models.CompanyStaff;
-import Project.Spring.Boot.Project.University.Models.Roles.RoleType;
-import Project.Spring.Boot.Project.University.Models.Roles.StaffRoles;
-import Project.Spring.Boot.Project.University.Models.Roles.RoleTypeRepository;
+//import Project.Spring.Boot.Project.University.Models.Roles.RoleType;
+//import Project.Spring.Boot.Project.University.Models.Roles.StaffRoles;
+//import Project.Spring.Boot.Project.University.Models.Roles.RoleTypeRepository;
 import Project.Spring.Boot.Project.UniversityRepository.CleaningCompanyRepository;
 import Project.Spring.Boot.Project.UniversityRepository.CompanyStaffRepository;
 import Project.Spring.Boot.Project.UniversityServices.CompanyStaffService;
@@ -32,8 +32,8 @@ public class CompanyStaffController {
     @Autowired
     CompanyStaffRepository companyStaffRepository;
 
-    @Autowired
-    RoleTypeRepository roleTypeRepository;
+//    @Autowired
+//    RoleTypeRepository roleTypeRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(CompanyStaffController.class);
 
@@ -42,11 +42,16 @@ public class CompanyStaffController {
         return ResponseEntity.ok(companyStaffService.getAllCompanyStaffs());
     }
 
-    @GetMapping("/list/roles")
-    public ResponseEntity<RoleType[]> getRoleTypes() {
-        RoleType[] roleTypes = RoleType.values();
-        return ResponseEntity.ok(roleTypes);
-    }
+//    @GetMapping("/list/roles")
+//    public ResponseEntity<RoleType[]> getRoleTypes() {
+//        RoleType[] roleTypes = RoleType.values();
+//        return ResponseEntity.ok(roleTypes);
+//    }
+
+//    @GetMapping("/list/roles")
+//    public List<StaffRoles> getRoleTypes(){
+//        return roleTypeRepository.findAll();
+//    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<CompanyStaff> getCompanyStaffsById(@PathVariable Long id) {

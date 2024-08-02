@@ -1,6 +1,6 @@
 package Project.Spring.Boot.Project.University.Models;
 
-import Project.Spring.Boot.Project.University.Models.Roles.StaffRoles;
+//import Project.Spring.Boot.Project.University.Models.Roles.StaffRoles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+
+//This is CLEANER
 public class CompanyStaff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +24,9 @@ public class CompanyStaff {
     @JoinColumn(name = "companyId")
     private CleaningCompany cleaningCompany;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "staff_id")
-    private List<StaffRoles> roles;
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "staff_id")
+//    private List<StaffRoles> roles;
 
     @ManyToMany
     @JoinTable(

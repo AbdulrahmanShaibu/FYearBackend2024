@@ -38,7 +38,7 @@ public class CompanyStaffService {
     public CompanyStaff updateCompanyStaffs(Long id, CompanyStaff companyStaffDetails) {
         CompanyStaff companyStaff = getCompanyStaffsById(id);
         companyStaff.setName(companyStaffDetails.getName());
-        companyStaff.setRoles(companyStaffDetails.getRoles());
+//        companyStaff.setRoles(companyStaffDetails.getRoles());
         companyStaff.setCleaningCompany(companyStaffDetails.getCleaningCompany());
         companyStaff.setClientOrganisations(companyStaffDetails.getClientOrganisations());
         return companyStaffRepository.save(companyStaff);

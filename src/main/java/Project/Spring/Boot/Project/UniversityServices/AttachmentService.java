@@ -78,4 +78,8 @@ public class AttachmentService {
     public void deleteAttachment(Long id) {
         attachmentRepository.deleteById(id);
     }
+
+    public long countAttachments() {
+        return attachmentRepository.count();
+    }
 }
