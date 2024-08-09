@@ -1,6 +1,5 @@
 package Project.Spring.Boot.Project.University.Models;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
