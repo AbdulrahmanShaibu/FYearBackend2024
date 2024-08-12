@@ -61,19 +61,21 @@ public class CompanyStaffController {
 
     @PostMapping("/post/company-staff")
     @Transactional
-    public ResponseEntity<String> createCompanyStaffs(@Valid @RequestBody CompanyStaff companyStaff) {
+    public ResponseEntity<String> createCompanyStaffs(@Valid @RequestBody List<CompanyStaff> companyStaffList) {
         try {
-            // Check if cleaning company is null
-            if (companyStaff.getCleaningCompany() == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cleaning company is required-{backend message}.");
+            for (CompanyStaff companyStaff : companyStaffList) {
+                // Check if cleaning company is null
+                if (companyStaff.getCleaningCompany() == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cleaning company is required-{backend message}.");
+                }
+
+                // Validate cleaning company
+                cleaningCompanyRepository.findById(companyStaff.getCleaningCompany().getCompanyId())
+                        .orElseThrow(() -> new BadRequestException("Cleaning company with ID " + companyStaff.getCleaningCompany().getCompanyId() + " does not exist."));
+
+                // Save the company staff
+                companyStaffRepository.save(companyStaff);
             }
-
-            // Validate cleaning company
-            cleaningCompanyRepository.findById(companyStaff.getCleaningCompany().getCompanyId())
-                    .orElseThrow(() -> new BadRequestException("Cleaning company with ID " + companyStaff.getCleaningCompany().getCompanyId() + " does not exist."));
-
-            // Save the company staff
-            companyStaffRepository.save(companyStaff);
             return ResponseEntity.status(HttpStatus.CREATED).body("Saved successfully");
 
         } catch (BadRequestException e) {

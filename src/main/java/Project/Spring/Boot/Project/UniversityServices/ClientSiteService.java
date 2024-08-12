@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,20 +27,16 @@ public class ClientSiteService {
             throw new IllegalArgumentException("ClientOrganisation cannot be null");
         }
 
-        // Log the received payload
-        System.out.println("Received ClientSite: " + clientSite);
+        System.out.println("ClientOrganisation name: " + clientOrganisation.getName()); // Debugging line
 
-        // Check if clientOrganisation already exists by name
-        Optional<ClientOrganisation> existingOrg = clientOrganisationRepository.findByName(clientOrganisation.getName());
+        Optional<ClientOrganisation> existingOrg = clientOrganisationRepository.findById(clientOrganisation.getId());
         if (existingOrg.isPresent()) {
             clientSite.setClientOrganisation(existingOrg.get());
         } else {
-            // Save new clientOrganisation
             ClientOrganisation savedOrg = clientOrganisationRepository.save(clientOrganisation);
             clientSite.setClientOrganisation(savedOrg);
         }
 
-        // Save the client site
         return clientSiteRepository.save(clientSite);
     }
 

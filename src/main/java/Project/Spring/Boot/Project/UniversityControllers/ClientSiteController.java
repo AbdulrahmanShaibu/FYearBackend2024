@@ -17,11 +17,13 @@ public class ClientSiteController {
     @Autowired
     private ClientSiteService clientSiteService;
 
+
     @PostMapping("/post/client-site")
     public ResponseEntity<ClientSite> createClientSite(@RequestBody ClientSite clientSite) {
         ClientSite createdClientSite = clientSiteService.createClientSite(clientSite);
         return ResponseEntity.ok(createdClientSite);
     }
+
 
     @GetMapping("/get/client-sites")
     public List<ClientSite> getAllClientSites(){
